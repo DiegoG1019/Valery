@@ -375,6 +375,7 @@ namespace Valery
             }
         }
 
+        public const string Version = "0.0.2";
         public static DEVMODE devMode = default;
         const int Delay = 1200;
         public static int WindowLeft;
@@ -382,6 +383,21 @@ namespace Valery
         public static int WindowSize;
         public static Rectangle Window;
         static async Task Main(string[] args)
+        {
+            try
+            {
+                await MainSafe(args);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("EXCEPTION CAUGHT.");
+                Console.WriteLine(e);
+                Console.WriteLine("Copy this and send it to me (with right click)\nPress any key to continue");
+                Console.ReadKey();
+                Environment.Exit(1);
+            }
+        }
+        static async Task MainSafe(string[] args)
         {
             const int ENUM_CURRENT_SETTINGS = -1;
 
@@ -403,7 +419,7 @@ namespace Valery
             var TinyStarCount = RandomGen.Next(150, 300);
             var GalaxyCount = RandomGen.Next(4, 12);
 
-            Console.WriteLine("Diego Garcia, 2020");
+            Console.WriteLine($"Diego Garcia, 2020, Version: {Version}");
             await Task.Delay(Delay);
 
             Console.WriteLine("Still technically a surprise");
@@ -417,21 +433,13 @@ namespace Valery
 
             List<IBody> Stars = new List<IBody>();
             for (int a = 0; a < ShootingStarCount; a++)
-            {
                 Stars.Add(new ShootingStar(RandomGen.Next(0, WindowLeft), RandomGen.Next(1, 4), RandomGen.Next(0, StarColors.Length - 1), RandomGen.Next(0, 2)));
-            }
             for (int a = 0; a < StarCount; a++)
-            {
                 Stars.Add(new Star(RandomGen.Next(0, WindowLeft), RandomGen.Next(0, WindowTop), RandomGen.Next(1, 7), RandomGen.Next(0, Star.Types), RandomGen.Next(0, StarColors.Length - 1)));
-            }
             for (int a = 0; a < TinyStarCount; a++)
-            {
                 Stars.Add(new Star(RandomGen.Next(0, WindowLeft), RandomGen.Next(0, WindowTop), RandomGen.Next(1, 5), RandomGen.Next(0, StarColors.Length - 1), true));
-            }
             for (int a = 0; a < GalaxyCount; a++)
-            {
                 Stars.Add(new Star(RandomGen.Next(0, WindowLeft), RandomGen.Next(0, WindowTop), RandomGen.Next(1, 3), RandomGen.Next(0, StarColors.Length - 1), RandomGen.Next(0, StarColors.Length - 1), RandomGen.Next(0, StarColors.Length - 1)));
-            }
 
             Console.WriteLine("Enjoy");
             await Task.Delay(Delay * 4);
